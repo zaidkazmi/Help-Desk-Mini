@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tickets - HelpDesk Mini</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    h1 { margin: 0; color: #667eea; }
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover { background: #5a6fd8; }
+    .search {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    th { background: #f8f9fa; font-weight: 600; }
+    tr:hover { background: #f8f9fa; }
+    .status {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .status.open { background: #d4edda; color: #155724; }
+    .status.in_progress { background: #fff3cd; color: #856404; }
+    .status.resolved { background: #d1ecf1; color: #0c5460; }
+    .status.closed { background: #f8d7da; color: #721c24; }
+    .priority {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .priority.low { background: #e2e3e5; color: #383d41; }
+    .priority.normal { background: #d1ecf1; color: #0c5460; }
+    .priority.high { background: #f8d7da; color: #721c24; }
+    .priority.urgent { background: #f5c6cb; color: #721c24; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Tickets</h1>
+    <div>
+      <button onclick="window.location.href='new.html'">New Ticket</button>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
+  <div class="search">
+    <input type="text" id="search" placeholder="Search tickets...">
+  </div>
+  <table id="ticketsTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>SLA Due</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <script>
+    const API_BASE = 'http://localhost:3000/api';
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      window.location.href = 'index.html';
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = 'index.html';
+    }
+
+    async function loadTickets(q = '') {
+      const res = await fetch(`${API_BASE}/tickets?q=${q}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (res.ok) {
+        const tbody = document.querySelector('#ticketsTable tbody');
+        tbody.innerHTML = '';
+        data.items.forEach(ticket => {
+          const row = `<tr>
+            <td>${ticket.id}</td>
+            <td>${ticket.title}</td>
+            <td><span class="status ${ticket.status}">${ticket.status.replace('_', ' ')}</span></td>
+            <td><span class="priority ${ticket.priority}">${ticket.priority}</span></td>
+            <td>${new Date(ticket.sla_due_at).toLocaleString()}</td>
+            <td><button onclick="viewTicket(${ticket.id})">View</button></td>
+          </tr>`;
+          tbody.innerHTML += row;
+        });
+      } else {
+        alert(data.error.message);
+      }
+    }
+
+    function viewTicket(id) {
+      window.location.href = `ticket.html?id=${id}`;
+    }
+
+    document.getElementById('search').addEventListener('input', (e) => {
+      loadTickets(e.target.value);
+    });
+
+    loadTickets();
+  </script>
+</body>
+</html>

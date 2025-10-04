@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket Details - HelpDesk Mini</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    h1 { margin: 0; color: #667eea; }
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover { background: #5a6fd8; }
+    .ticket-details {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .ticket-details p { margin: 10px 0; }
+    .status, .priority {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .status.open { background: #d4edda; color: #155724; }
+    .status.in_progress { background: #fff3cd; color: #856404; }
+    .status.resolved { background: #d1ecf1; color: #0c5460; }
+    .status.closed { background: #f8d7da; color: #721c24; }
+    .priority.low { background: #e2e3e5; color: #383d41; }
+    .priority.normal { background: #d1ecf1; color: #0c5460; }
+    .priority.high { background: #f8d7da; color: #721c24; }
+    .priority.urgent { background: #f5c6cb; color: #721c24; }
+    h2 { color: #667eea; margin-top: 30px; }
+    .comment {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 10px;
+    }
+    .comment p { margin: 5px 0; }
+    .comment small { color: #666; }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-top: 20px;
+    }
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 80px;
+    }
+    textarea:focus { outline: none; border-color: #667eea; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Ticket Details</h1>
+      <button onclick="window.location.href='tickets.html'">Back to Tickets</button>
+    </div>
+    <div class="ticket-details" id="ticket"></div>
+    <h2>Comments</h2>
+    <div id="comments"></div>
+    <form id="commentForm">
+      <textarea id="commentText" placeholder="Add a comment..." required></textarea>
+      <button type="submit">Add Comment</button>
+    </form>
+  </div>
+  <script>
+    const API_BASE = 'http://localhost:3000/api';
+    const token = localStorage.getItem('token');
+    const urlParams = new URLSearchParams(window.location.search);
+    const ticketId = urlParams.get('id');
+
+    if (!token || !ticketId) {
+      window.location.href = 'index.html';
+    }
+
+    async function loadTicket() {
+      const res = await fetch(`${API_BASE}/tickets/${ticketId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (res.ok) {
+        const ticket = data.ticket;
+        document.getElementById('ticket').innerHTML = `
+          <p><strong>ID:</strong> ${ticket.id}</p>
+          <p><strong>Title:</strong> ${ticket.title}</p>
+          <p><strong>Description:</strong> ${ticket.description || 'No description'}</p>
+          <p><strong>Status:</strong> <span class="status ${ticket.status}">${ticket.status.replace('_', ' ')}</span></p>
+          <p><strong>Priority:</strong> <span class="priority ${ticket.priority}">${ticket.priority}</span></p>
+          <p><strong>SLA Due:</strong> ${new Date(ticket.sla_due_at).toLocaleString()}</p>
+          <p><strong>Created:</strong> ${new Date(ticket.created_at).toLocaleString()}</p>
+        `;
+        const commentsDiv = document.getElementById('comments');
+        commentsDiv.innerHTML = '';
+        data.comments.forEach(comment => {
+          commentsDiv.innerHTML += `<div class="comment">
+            <p><strong>User ${comment.author_id}:</strong> ${comment.text}</p>
+            <small>${new Date(comment.created_at).toLocaleString()}</small>
+          </div>`;
+        });
+      } else {
+        alert(data.error.message);
+      }
+    }
+
+    document.getElementById('commentForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const text = document.getElementById('commentText').value;
+      const res = await fetch(`${API_BASE}/tickets/${ticketId}/comments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ text })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        document.getElementById('commentText').value = '';
+        loadTicket();
+      } else {
+        alert(data.error.message);
+      }
+    });
+
+    loadTicket();
+  </script>
+</body>
+</html>

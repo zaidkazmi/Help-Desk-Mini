@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: helpdesk-mini
+    env: node
+    branch: main
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: JWT_SECRET
+      - key: DB_PATH
