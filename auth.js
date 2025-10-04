@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const db = require('./db');
 
-const JWT_SECRET = 'your-secret-key'; // In production, use environment variable
+const JWT_SECRET = process.env.JWT_SECRET || '4a7a11dc4699c8950450d9eacfdbdb2d'; // Prefer env var in production
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
