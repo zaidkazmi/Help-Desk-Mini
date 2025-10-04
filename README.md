@@ -52,3 +52,20 @@ Notes about SQLite on Render
 - Render services have ephemeral disks per instance. The SQLite file will be writable while the instance runs but won't be a reliable persistent store across redeploys or if Render moves the instance. For a durable production DB, migrate to Postgres and change `db.js` accordingly.
 
 If you'd like, I can prepare a small migration plan to move from SQLite to Postgres (code changes + Render Postgres addon setup).
+
+Deploying the frontend to Netlify
+
+1. Build & deploy the `public/` folder (static site):
+	- Option A (recommended): Connect the GitHub repo to Netlify and set the publish directory to `public`.
+	- Option B (manual): Drag & drop the `public/` folder in Netlify's Sites dashboard.
+
+2. Proxy API requests to your backend (Render):
+	- Edit `public/_redirects` and replace `BACKEND_URL` with your Render service domain, e.g. `https://your-app.onrender.com`.
+	- This makes calls from the frontend to `/api/*` be proxied to your backend and avoids CORS.
+
+3. After deploy, open the Netlify site and the frontend will talk to your backend via the redirect rules.
+
+Notes:
+- The backend still needs to be deployed (Render or any host). Netlify will only host static frontend assets.
+- If you prefer a single-host setup, you can deploy both frontend and backend on Render or adapt the API into Netlify Functions (requires refactor).
+
