@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HelpDesk Mini - Login</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #333;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    h1 { text-align: center; color: #667eea; margin-bottom: 30px; }
+    h2 { text-align: center; margin-top: 30px; margin-bottom: 20px; color: #555; }
+    form { margin-bottom: 20px; }
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    input:focus, select:focus { outline: none; border-color: #667eea; }
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover { background: #5a6fd8; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>HelpDesk Mini</h1>
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+    <h2>Register</h2>
+    <form id="registerForm">
+      <input type="text" id="name" placeholder="Name" required>
+      <input type="email" id="regEmail" placeholder="Email" required>
+      <input type="password" id="regPassword" placeholder="Password" required>
+      <select id="role">
+        <option value="user">User</option>
+        <option value="agent">Agent</option>
+        <option value="admin">Admin</option>
+      </select>
+      <button type="submit">Register</button>
+    </form>
+  </div>
+  <script>
+    const API_BASE = 'http://localhost:3000/api';
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const res = await fetch(`${API_BASE}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        window.location.href = 'tickets.html';
+      } else {
+        alert(data.error.message);
+      }
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('regEmail').value;
+      const password = document.getElementById('regPassword').value;
+      const role = document.getElementById('role').value;
+      const res = await fetch(`${API_BASE}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password, role })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert('Registered successfully. Please login.');
+      } else {
+        alert(data.error.message);
+      }
+    });
+  </script>
+</body>
+</html>

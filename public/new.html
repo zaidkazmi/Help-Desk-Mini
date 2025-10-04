@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Ticket - HelpDesk Mini</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #333;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+    h1 { text-align: center; color: #667eea; margin-bottom: 30px; }
+    form { margin-bottom: 20px; }
+    input, textarea, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      font-family: inherit;
+    }
+    textarea { resize: vertical; min-height: 100px; }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: #667eea; }
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    button:hover { background: #5a6fd8; }
+    .back-btn {
+      background: #6c757d;
+      margin-top: 10px;
+    }
+    .back-btn:hover { background: #5a6268; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>New Ticket</h1>
+    <form id="ticketForm">
+      <input type="text" id="title" placeholder="Ticket Title" required>
+      <textarea id="description" placeholder="Description"></textarea>
+      <select id="priority">
+        <option value="low">Low</option>
+        <option value="normal">Normal</option>
+        <option value="high">High</option>
+        <option value="urgent">Urgent</option>
+      </select>
+      <button type="submit">Create Ticket</button>
+    </form>
+    <button class="back-btn" onclick="window.location.href='tickets.html'">Back to Tickets</button>
+  </div>
+  <script>
+    const API_BASE = 'http://localhost:3000/api';
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      window.location.href = 'index.html';
+    }
+
+    document.getElementById('ticketForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('title').value;
+      const description = document.getElementById('description').value;
+      const priority = document.getElementById('priority').value;
+      const res = await fetch(`${API_BASE}/tickets`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'Idempotency-Key': Date.now().toString()
+        },
+        body: JSON.stringify({ title, description, priority })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert('Ticket created successfully!');
+        window.location.href = 'tickets.html';
+      } else {
+        alert(data.error.message);
+      }
+    });
+  </script>
+</body>
+</html>
