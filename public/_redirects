@@ -1,5 +1,5 @@
+ /api/*    https://help-desk-mini-1.onrender.com/api/:splat    200
 /*    /index.html   200
-/api/*    https://help-desk-mini-1.onrender.com/api/:splat    200
 
 # Replace BACKEND_URL with your backend host (for example: your-app.onrender.com)
 # This proxies all /api requests from the Netlify-hosted frontend to your backend, avoiding CORS.
