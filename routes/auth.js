@@ -2,6 +2,7 @@ const express = require('express');
 const { register, login } = require('../auth');
 
 const router = express.Router();
+app.set('trust proxy', 1);
 
 router.post('/register', async (req, res) => {
   try {
