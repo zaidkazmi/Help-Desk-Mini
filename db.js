@@ -73,12 +73,13 @@ db.serialize(() => {
   // Seed data
   const hashUser = bcrypt.hashSync('password123', 10);
   const hashAgent = bcrypt.hashSync('agentpass', 10);
-  const hashAdmin = bcrypt.hashSync('adminpass', 10);
+  // Demo admin credentials: admin@mail.com / admin123
+  const hashAdmin = bcrypt.hashSync('admin123', 10);
 
   db.run(`INSERT OR IGNORE INTO users (name, email, password_hash, role) VALUES
     ('Alice', 'alice@example.com', ?, 'user'),
     ('Agent', 'agent@help.com', ?, 'agent'),
-    ('Admin', 'admin@help.com', ?, 'admin')`,
+    ('Admin', 'admin@mail.com', ?, 'admin')`,
     [hashUser, hashAgent, hashAdmin]);
 
   // Get user ids

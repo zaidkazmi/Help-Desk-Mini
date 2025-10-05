@@ -69,3 +69,10 @@ Notes:
 - The backend still needs to be deployed (Render or any host). Netlify will only host static frontend assets.
 - If you prefer a single-host setup, you can deploy both frontend and backend on Render or adapt the API into Netlify Functions (requires refactor).
 
+Demo credentials (seeded)
+
+- Admin: admin@mail.com / admin123
+- User: alice@example.com / password123
+- Agent: agent@help.com / agentpass
+
+
