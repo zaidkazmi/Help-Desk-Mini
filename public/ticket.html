@@ -9,93 +9,19 @@
 <body>
   <div class="site">
     <div class="card" style="max-width:900px;margin:auto">
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-    }
-    h1 { margin: 0; color: #667eea; }
-    button {
-      background: #667eea;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    button:hover { background: #5a6fd8; }
-    .ticket-details {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-    }
-    .ticket-details p { margin: 10px 0; }
-    .status, .priority {
-      display: inline-block;
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-    .status.open { background: #d4edda; color: #155724; }
-    .status.in_progress { background: #fff3cd; color: #856404; }
-    .status.resolved { background: #d1ecf1; color: #0c5460; }
-    .status.closed { background: #f8d7da; color: #721c24; }
-    .priority.low { background: #e2e3e5; color: #383d41; }
-    .priority.normal { background: #d1ecf1; color: #0c5460; }
-    .priority.high { background: #f8d7da; color: #721c24; }
-    .priority.urgent { background: #f5c6cb; color: #721c24; }
-    h2 { color: #667eea; margin-top: 30px; }
-    .comment {
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      margin-bottom: 10px;
-    }
-    .comment p { margin: 5px 0; }
-    .comment small { color: #666; }
-    form {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      margin-top: 20px;
-    }
-    textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-family: inherit;
-      resize: vertical;
-      min-height: 80px;
-    }
-    textarea:focus { outline: none; border-color: #667eea; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>Ticket Details</h1>
-      <button onclick="window.location.href='tickets.html'">Back to Tickets</button>
+      <div class="header" style="display:flex;justify-content:space-between;align-items:center">
+        <h1>Ticket Details</h1>
+        <button onclick="window.location.href='tickets.html'">Back to Tickets</button>
+      </div>
+      <div class="ticket-details" id="ticket"></div>
+      <h2>Comments</h2>
+      <div id="comments"></div>
+      <form id="commentForm">
+        <textarea id="commentText" placeholder="Add a comment..." required></textarea>
+        <button type="submit">Add Comment</button>
+      </form>
     </div>
-    <div class="ticket-details" id="ticket"></div>
-    <h2>Comments</h2>
-    <div id="comments"></div>
-    <form id="commentForm">
-      <textarea id="commentText" placeholder="Add a comment..." required></textarea>
-      <button type="submit">Add Comment</button>
-    </form>
-    </div>
+  </div>
   <script>
   const API_BASE = '/api';
     const token = localStorage.getItem('token');
