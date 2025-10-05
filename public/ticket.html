@@ -4,19 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ticket Details - HelpDesk Mini</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 20px;
-      color: #333;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="site">
+    <div class="card" style="max-width:900px;margin:auto">
     .header {
       display: flex;
       justify-content: space-between;
@@ -103,7 +95,7 @@
       <textarea id="commentText" placeholder="Add a comment..." required></textarea>
       <button type="submit">Add Comment</button>
     </form>
-  </div>
+    </div>
   <script>
   const API_BASE = '/api';
     const token = localStorage.getItem('token');

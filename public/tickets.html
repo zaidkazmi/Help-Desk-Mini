@@ -86,13 +86,20 @@
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>Tickets</h1>
-    <div>
-      <button onclick="window.location.href='new.html'">New Ticket</button>
-      <button onclick="logout()">Logout</button>
-    </div>
-  </div>
+  <div class="site">
+    <div class="card">
+      <div class="row" style="align-items:center;justify-content:space-between">
+        <div>
+          <h1>Tickets</h1>
+          <div class="muted">All tickets assigned to you</div>
+        </div>
+        <div class="header-actions">
+          <button class="ghost" onclick="window.location.href='new.html'">New Ticket</button>
+          <button onclick="logout()">Logout</button>
+        </div>
+      </div>
+      <div style="height:16px"></div>
+  
   <div class="search">
     <input type="text" id="search" placeholder="Search tickets...">
   </div>

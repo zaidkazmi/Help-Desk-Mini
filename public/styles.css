@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root{
+  --bg1: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  --card-bg: #ffffff;
+  --muted: #6b7280;
+  --accent: #667eea;
+  --success: #10b981;
+  --danger: #ef4444;
+}
+
+*{box-sizing:border-box}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; margin:0; background:var(--bg1); color:#111; -webkit-font-smoothing:antialiased}
+.site{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:48px}
+.card{background:var(--card-bg);border-radius:12px;box-shadow:0 12px 30px rgba(2,6,23,0.12);padding:36px;max-width:920px;width:100%}
+h1,h2{margin:0}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#89f7fe 0%, #66a6ff 100%);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+.row{display:flex;gap:24px}
+.col{flex:1}
+form{display:grid;gap:12px}
+input,select,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #e6e9ef;background:#fff}
+button{padding:12px 16px;border-radius:9px;border:none;background:var(--accent);color:#fff;font-weight:600;cursor:pointer}
+button.ghost{background:transparent;color:var(--accent);border:1px solid rgba(102,126,234,0.12)}
+.muted{color:var(--muted)}
+.tickets-table{width:100%;border-collapse:collapse}
+.tickets-table th,.tickets-table td{padding:12px;text-align:left;border-bottom:1px solid #f3f4f6}
+.status{padding:6px 10px;border-radius:999px;font-weight:600;font-size:13px}
+.status.open{background:#e6fffa;color:#03543f}
+.status.in_progress{background:#fffbeb;color:#92400e}
+.status.resolved{background:#ecfeff;color:#0f4c5c}
+.priority.urgent{background:#fff1f2;color:#9f1239}
+.header-actions{display:flex;gap:8px}
+
+@media(max-width:900px){.row{flex-direction:column}.site{padding:24px}}

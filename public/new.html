@@ -4,60 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New Ticket - HelpDesk Mini</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      color: #333;
-    }
-    .container {
-      background: white;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 500px;
-    }
-    h1 { text-align: center; color: #667eea; margin-bottom: 30px; }
-    form { margin-bottom: 20px; }
-    input, textarea, select, button {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 16px;
-      font-family: inherit;
-    }
-    textarea { resize: vertical; min-height: 100px; }
-    input:focus, textarea:focus, select:focus { outline: none; border-color: #667eea; }
-    button {
-      background: #667eea;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background 0.3s;
-      font-size: 16px;
-      font-weight: 600;
-    }
-    button:hover { background: #5a6fd8; }
-    .back-btn {
-      background: #6c757d;
-      margin-top: 10px;
-    }
-    .back-btn:hover { background: #5a6268; }
-  </style>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1>New Ticket</h1>
+  <div class="site">
+    <div class="card">
+      <div class="brand">
+        <div class="logo">HD</div>
+        <div>
+          <h1>New Ticket</h1>
+          <div class="muted">Create a new support ticket</div>
+        </div>
+      </div>
+      <div style="height:16px"></div>
+      <form id="ticketForm">
     <form id="ticketForm">
       <input type="text" id="title" placeholder="Ticket Title" required>
       <textarea id="description" placeholder="Description"></textarea>
@@ -69,7 +29,9 @@
       </select>
       <button type="submit">Create Ticket</button>
     </form>
-    <button class="back-btn" onclick="window.location.href='tickets.html'">Back to Tickets</button>
+      <div style="height:16px"></div>
+      <button class="ghost" onclick="window.location.href='tickets.html'">Back to Tickets</button>
+    </div>
   </div>
   <script>
   const API_BASE = '/api';

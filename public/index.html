@@ -48,9 +48,17 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>HelpDesk Mini</h1>
-    <h2>Login</h2>
+  <div class="site">
+    <div class="card">
+      <div class="brand">
+        <div class="logo">HD</div>
+        <div>
+          <h1>HelpDesk Mini</h1>
+          <div class="muted">Smart ticketing with threaded comments</div>
+        </div>
+      </div>
+      <div style="height:18px"></div>
+      <h2>Login</h2>
     <form id="loginForm">
       <input type="email" id="email" placeholder="Email" required>
       <input type="password" id="password" placeholder="Password" required>
@@ -68,6 +76,7 @@
       </select>
       <button type="submit">Register</button>
     </form>
+    </div>
   </div>
   <script>
   const API_BASE = '/api';
